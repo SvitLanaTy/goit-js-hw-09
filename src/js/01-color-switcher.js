@@ -10,6 +10,7 @@ function changeBgColor() {
 }
 
 function onStartClick() {
+  clearInterval(timer);
   timer = setInterval(changeBgColor, 1000);
   startBtn.disabled = true;
 }
