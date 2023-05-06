@@ -81,7 +81,7 @@ function addLeadingZero(value) {
 function onStartClick() {
   if (selectedDate - Date.now() < 1000) {
     refs.startBtn.disabled = true;
-    return window.alert(`Please choose a date in the future`);
+    return Notiflix.Notify.failure(`Please choose a date in the future`);
   } else {
     setInterval(handleTimer, 1000);
   }
