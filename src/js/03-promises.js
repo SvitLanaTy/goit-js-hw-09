@@ -1,10 +1,6 @@
 import Notiflix from 'notiflix';
 const form = document.querySelector('.form');
 
-form.delay.value = 2000;
-form.step.value = 0;
-form.amount.value = 6;
-
 const { delay, step, amount } = form.elements;
 
 form.addEventListener(`submit`, onFormSubmit);

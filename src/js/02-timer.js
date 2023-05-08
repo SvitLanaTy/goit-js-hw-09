@@ -30,26 +30,28 @@ const options = {
 };
 
 const handleTimer = () => {
-  const timeLeft = selectedDate - Date.now();
-  if (timeLeft >= 1000) {
-    const time = convertMs(timeLeft);
-    refs.startBtn.disabled = true;
-    refs.datetimePicker.disabled = true;
-    refs.days.textContent = addLeadingZero(String(time.days));
-    refs.hours.textContent = addLeadingZero(String(time.hours));
-    refs.minutes.textContent = addLeadingZero(String(time.minutes));
-    refs.seconds.textContent = addLeadingZero(String(time.seconds));
-  } else {
-    refs.datetimePicker.disabled = false;
-    refs.days.textContent = `00`;
-    refs.hours.textContent = `00`;
-    refs.minutes.textContent = `00`;
-    refs.seconds.textContent = `00`;
-    return;
-  }
+  timerId = setInterval(() => {
+    const interval = selectedDate - Date.now();
+
+    if (interval >= 0) {
+      const timeLeft = convertMs(interval);
+
+      refs.startBtn.disabled = true;
+      refs.datetimePicker.disabled = true;
+      refs.days.textContent = addLeadingZero(String(timeLeft.days));
+      refs.hours.textContent = addLeadingZero(String(timeLeft.hours));
+      refs.minutes.textContent = addLeadingZero(String(timeLeft.minutes));
+      refs.seconds.textContent = addLeadingZero(String(timeLeft.seconds));
+    } else {
+      clearInterval(timerId);
+      refs.datetimePicker.disabled = false;
+      return;
+    }
+  }, 1000);
 };
 
-let selectedDate;
+let selectedDate = null;
+let timerId = null;
 refs.startBtn.addEventListener(`click`, onStartClick);
 refs.startBtn.disabled = true;
 
@@ -79,10 +81,9 @@ function addLeadingZero(value) {
 }
 
 function onStartClick() {
-  if (selectedDate - Date.now() < 1000) {
+  if (selectedDate - Date.now() <= 0) {
     refs.startBtn.disabled = true;
     return Notiflix.Notify.failure(`Please choose a date in the future`);
-  } else {
-    setInterval(handleTimer, 1000);
   }
+  handleTimer();
 }
